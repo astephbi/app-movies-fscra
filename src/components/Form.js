@@ -5,17 +5,18 @@ import Card from "./Card";
 
 const Form = () => {
   const [moviesData, setMoviesData] = useState([]);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     axios
       .get(
-        "https://api.themoviedb.org/3/movie/550?api_key=edbf65ac2f4d8c811990a555801878b4&query=star&language=fr-FR"
+        `https://api.themoviedb.org/3/search/movie?api_key=edbf65ac2f4d8c811990a555801878b4&query=${search}&language=fr-FR`
       )
       .then((res) => {
-        const data = Array.isArray(res.data) ? res.data : [res.data];
-        setMoviesData(data);
+        // const data = Array.isArray(res.data) ? res.data : [res.data];
+        setMoviesData(res.data.results);
       });
-  }, []);
+  }, [search]);
 
   return (
     <div className="form-component">
@@ -25,6 +26,7 @@ const Form = () => {
             type="text"
             placeholder='Chercher le titre d"un film'
             id="search-input"
+            onChange={(e) => setSearch(e.target.value)}
           />
           <input type="submit" value="Recherche" />
         </form>
